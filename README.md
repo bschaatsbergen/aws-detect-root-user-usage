@@ -25,17 +25,17 @@ any console sign in and API calls tracked via CloudTrail from the root user.
 
 ```javascript
 {
-	"detail-type": [
-      "AWS API Call via CloudTrail", 
+   "detail-type":[
+      "AWS API Call via CloudTrail",
       "AWS Console Sign In via CloudTrail"
-    ],
-	"detail": {
-		"userIdentity": {
-			"type": [
-        "Root"
-      ]
-		}
-	}
+   ],
+   "detail":{
+      "userIdentity":{
+         "type":[
+            "Root"
+         ]
+      }
+   }
 }
 ```
 
