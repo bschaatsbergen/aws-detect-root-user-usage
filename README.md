@@ -23,7 +23,7 @@ aws cloudformation deploy --stack-name root-user-usage-stack \
 The stack contains an EventBridge rule using a event pattern that captures
 any console sign in and API calls tracked via CloudTrail from the root user.
 
-```json
+```javascript
 {
 	"detail-type": [
       "AWS API Call via CloudTrail", 
