@@ -4,6 +4,18 @@ When you create a new AWS account it's important that immediately secure the roo
 
 This repository contains a `stack.yaml` that you can deploy to your AWS account in order to capture and alert any root user usage. It contains an EventBridge rule, SNS topic and SNS subscription.
 
+## Deploy
+
+To deploy the stack we simply issue the `cloudformation deploy` command.
+
+```sh
+EmailAddress="brunoschaatsbergen@binx.io"
+aws cloudformation deploy --stack-name root-user-usage-stack \
+    --template-file stack.yaml \
+    --parameter-overrides EmailAddress=${EmailAddress} \
+    --region eu-central-1
+```
+
 ## EventBridge
 
 The stack contains an EventBridge rule using a event pattern that captures
