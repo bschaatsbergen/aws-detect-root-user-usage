@@ -19,8 +19,8 @@ Resources:
   EventRule:
     Type: AWS::Events::Rule
     Properties: 
-      Name: String
-      Description: String
+      Name: root-user-usage-events
+      Description: Rule that captures console sign in and API calls from the root user.
       EventPattern:
         detail-type:
         - AWS API Call via CloudTrail
