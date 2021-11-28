@@ -1,6 +1,6 @@
 # detect and alert AWS root user usage
 
-When you create a new AWS account it's important that immediately secure the root user as it has full access to all your resources for all AWS services, including billing information. It's very important that you prevent anyone from using this account unless there's a specific set of tasks that require root privilege only.
+When you create a new AWS account it's important that you immediately secure the root user as it has full access to everything in your AWS account. It's very important that you prevent anyone from using this account unless there's a specific task that requires you to use root privilege.
 
 This repository contains a `stack.yaml` that you can deploy to your AWS account in order to capture and alert any root user usage. It contains an EventBridge rule, SNS topic and SNS subscription.
 
