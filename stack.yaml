@@ -1,0 +1,43 @@
+---
+# yamllint disable rule:line-length
+AWSTemplateFormatVersion: "2010-09-09"
+
+Description: |
+  CloudFormation template to provision a stack that detects and notifies about root user usage.
+
+Parameters:
+  EmailAddress:
+    Type: String
+    AllowedPattern: "^[\\x20-\\x45]?[\\w-\\+]+(\\.[\\w]+)*@[\\w-]+(\\.[\\w]+)*(\\.[a-z]{2,})$"
+    ConstraintDescription: Email address required.
+    Description: Enter an email address you want to subscribe to the Amazon SNS topic.
+
+
+Resources:
+  # EventBridge rule that captures:
+  # Console sign in and API calls tracked via CloudTrail from the root user.
+  EventRule:
+    Type: AWS::Events::Rule
+    Properties: 
+      Name: String
+      Description: String
+      EventPattern:
+        detail-type:
+        - AWS API Call via CloudTrail
+        - AWS Console Sign In via CloudTrail
+        detail:
+          userIdentity:
+            type:
+            - Root
+      Targets: 
+        - !Ref SNSTopic
+
+  # SNS Topic with Email subscription 
+  # Note: Subscription must be confirmed prior to deploying the stack).
+  SNSTopic:
+    Type: AWS::SNS::Topic
+    Properties:
+      TopicName: root-user-usage-events
+    Subscription:
+      - Endpoint: !Ref EmailAddress
+        Protocol: email-json
