@@ -12,11 +12,10 @@ Parameters:
     ConstraintDescription: Email address required.
     Description: Enter an email address you want to subscribe to the Amazon SNS topic.
 
-
 Resources:
   # EventBridge rule that captures:
   # Console sign in and API calls tracked via CloudTrail from the root user.
-  EventRule:
+  RootUsageEventRule:
     Type: AWS::Events::Rule
     Properties: 
       Name: root-user-usage-events
@@ -30,14 +29,33 @@ Resources:
             type:
             - Root
       Targets: 
-        - !Ref SNSTopic
+      - Id: root-user-usage-events-rule
+        Arn: !Ref SnsTopic
+    DependsOn:
+    - SnsTopic
 
   # SNS Topic with Email subscription 
   # Note: Subscription must be confirmed prior to deploying the stack).
-  SNSTopic:
+  SnsTopic:
     Type: AWS::SNS::Topic
     Properties:
       TopicName: root-user-usage-events
-    Subscription:
-      - Endpoint: !Ref EmailAddress
-        Protocol: email-json
+      Subscription:
+        - Endpoint: !Ref EmailAddress
+          Protocol: email-json
+
+  # Allow EventBridge to invoke SNS
+  EventBridgeToToSnsPolicy:
+    Type: AWS::SNS::TopicPolicy
+    Properties: 
+      PolicyDocument:
+        Statement:
+        - Effect: Allow
+          Principal:
+            Service: events.amazonaws.com
+          Action: sns:Publish
+          Resource: !Ref SnsTopic
+      Topics: 
+        - !Ref SnsTopic
+    DependsOn:
+    - SnsTopic

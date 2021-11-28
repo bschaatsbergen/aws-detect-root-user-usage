@@ -1,5 +1,7 @@
 # detect and alert AWS root user usage
 
+**Note:** Don't deploy this stack yet, it's under development
+
 When you create a new AWS account it's important that you immediately secure the root user as it has full access to everything in your AWS account. It's very important that you prevent anyone from using this account unless there's a specific task that requires you to use root privilege.
 
 This repository contains a `stack.yaml` that you can deploy to your AWS account in order to capture and alert any root user usage. It contains an EventBridge rule, SNS topic and SNS subscription.
@@ -21,15 +23,20 @@ aws cloudformation deploy --stack-name root-user-usage-stack \
 The stack contains an EventBridge rule using a event pattern that captures
 any console sign in and API calls tracked via CloudTrail from the root user.
 
-```yaml
-EventPattern:
-  detail-type:
-    - AWS API Call via CloudTrail
-    - AWS Console Sign In via CloudTrail
-  detail:
-    userIdentity:
-    type:
-      - Root
+```json
+{
+	"detail-type": [
+      "AWS API Call via CloudTrail", 
+      "AWS Console Sign In via CloudTrail"
+    ],
+	"detail": {
+		"userIdentity": {
+			"type": [
+        "Root"
+      ]
+		}
+	}
+}
 ```
 
 ## SNS Subscription
